@@ -1,13 +1,12 @@
 import customtkinter as ctk
 from views.search_view import SearchView
 from views.add_view import AddView
+from views.edit_view import EditView
 from database import Database
 from settings_manager import SettingsManager
-from views.favorite_view import FavoriteView
 
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("blue")
-from views.add_view import EditView # Update your imports
 
 class HoverTip:
     def __init__(self, widget, text):
@@ -38,7 +37,7 @@ class HoverTip:
 class AlgorithmFinderApp(ctk.CTk):
     def __init__(self):
         super().__init__()
-        self.title("Algorithm Finder Pro")
+        self.title("Algorithm Finder")
         self.geometry("1100x700")
         self.db = Database()
         self.settings = SettingsManager()
@@ -49,11 +48,13 @@ class AlgorithmFinderApp(ctk.CTk):
 
         self.show_search_view()
         self.center_window()
+        
 
     def show_search_view(self):
         self.clear_main_view()
         self.current_view = SearchView(self.main_view, self.db, self.settings, self)
         self.current_view.pack(fill="both", expand=True)
+        self.main_view.focus_set() #[cite: 1]
 
     def show_add_view(self):
         self.clear_main_view()

@@ -1,33 +1,103 @@
 [
     {
-        "name": "Binary Search",
-        "code": "#include <vector>\n\nint binarySearch(const std::vector<int>& arr, int target) {\n    int left = 0;\n    int right = arr.size() - 1;\n\n    while (left <= right) {\n        int mid = left + (right - left) / 2; // Prevents overflow\n\n        if (arr[mid] == target) return mid;\n        if (arr[mid] < target) left = mid + 1;\n        else right = mid - 1;\n    }\n    return -1; // Not found\n}",
+        "name": "Sieve of Eratosthenes",
+        "complexity": "O(n log log n)",
+        "category": "Math",
         "tags": [
-            "Searching",
-            "Divide and Conquer"
+            "Number Theory",
+            "Precomputation",
+            "Primes"
         ],
-        "complexity": "O(logN)",
-        "is_favorite": false
+        "is_favorite": false,
+        "versions": [
+            {
+                "lang": "C++",
+                "code": "vector<int> sieve(int n) {\n    vector<bool> is_prime(n + 1, true);\n    is_prime[0] = is_prime[1] = false;\n    for (int p = 2; p * p <= n; p++) {\n        if (is_prime[p]) {\n            for (int i = p * p; i <= n; i += p)\n                is_prime[i] = false;\n        }\n    }\n    vector<int> primes;\n    for (int p = 2; p <= n; p++) {\n        if (is_prime[p]) primes.push_back(p);\n    }\n    return primes;\n}"
+            }
+        ]
     },
     {
-        "name": "Dijkstra's Algorithm",
-        "code": "#include <vector>\n#include <queue>\n\nusing namespace std;\n\nconst int INF = 1e9;\n\nvoid dijkstra(int start, vector<vector<pair<int, int>>>& adj, vector<int>& dist) {\n    int n = adj.size();\n    dist.assign(n, INF);\n    dist[start] = 0;\n    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;\n\n    pq.push({0, start});\n    while (!pq.empty()) {\n        int d = pq.top().first;\n        int u = pq.top().second;\n        pq.pop();\n\n        if (d > dist[u]) continue;\n\n        for (auto& edge : adj[u]) {\n            int v = edge.first;\n            int weight = edge.second;\n            if (dist[u] + weight < dist[v]) {\n                dist[v] = dist[u] + weight;\n                pq.push({dist[v], v});\n            }\n        }\n    }\n}",
+        "name": "GCD",
+        "complexity": "O(log min(a,b))",
+        "category": "Math",
         "tags": [
-            "Graph",
-            "Greedy",
-            "Shortest Path"
+            "Number Theory",
+            "Recursion",
+            "Fundamentals"
         ],
-        "complexity": "O((V+E)logV)",
-        "is_favorite": false
+        "is_favorite": false,
+        "versions": [
+            {
+                "lang": "C++",
+                "code": "int GCD(int a, int b) {\n    while (b != 0) {\n        int remainder = a % b;\n        a = b;\n        b = remainder;\n    }\n    return a;\n}"
+            }
+        ]
     },
     {
-        "name": "Binary Exponentiation",
-        "code": "long long fastPower(long long base, long long exp, long long mod) {\n    long long res = 1;\n    base %= mod;\n    while (exp > 0) {\n        if (exp % 2 == 1) res = (res * base) % mod;\n        base = (base * base) % mod;\n        exp /= 2;\n    }\n    return res;\n}",
+        "name": "Binary Modular Exponentiation",
+        "complexity": "O(log n)",
+        "category": "Math",
         "tags": [
-            "Math",
-            "Number Theory"
+            "Divide and Conquer",
+            "Bitmask",
+            "Modular Arithmetic"
         ],
-        "complexity": "O(logN)",
-        "is_favorite": false
+        "is_favorite": false,
+        "versions": [
+            {
+                "lang": "C++",
+                "code": "long long Modpow(long long a, long long n, long long m) {\n    a %= m;\n    long long res = 1;\n    while (n > 0) {\n        if (b & 1) res = res * a % m;\n        a = a * a % m;\n        n >>= 1;\n    }\n    return res;\n}"
+            }
+        ]
+    },
+    {
+        "name": "Extended Euclidean Algorithm",
+        "complexity": "O(log min(a,b))",
+        "category": "Math",
+        "tags": [
+            "Number Theory",
+            "Math"
+        ],
+        "is_favorite": false,
+        "versions": [
+            {
+                "lang": "C++",
+                "code": "long long extended_gcd(long long a, long long b, long long &x, long long &y) {\n    if (b == 0) {\n        x = 1; y = 0;\n        return a;\n    }\n    long long x1, y1;\n    long long d = extended_gcd(b, a % b, x1, y1);\n    x = y1;\n    y = x1 - y1 * (a / b);\n    return d;\n}"
+            }
+        ]
+    },
+    {
+        "name": "Modular Inverse",
+        "complexity": "O(log min(a,m))",
+        "category": "Math",
+        "tags": [
+            "Number Theory",
+            "Modular Arithmetic",
+            "Combinatorics"
+        ],
+        "is_favorite": false,
+        "versions": [
+            {
+                "lang": "C++",
+                "code": "long long modInverse(long long a, long long m) {\n    long long x, y;\n    long long g = extended_gcd(a, m, x, y);\n    if (g != 1) return -1; // Inverse doesn't exist\n    return (x % m + m) % m;\n}"
+            }
+        ]
+    },
+    {
+        "name": "Prime Factorization",
+        "complexity": "O(\u221an)",
+        "category": "Math",
+        "tags": [
+            "Number Theory",
+            "Implementation",
+            "Brute Force"
+        ],
+        "is_favorite": false,
+        "versions": [
+            {
+                "lang": "C++",
+                "code": "vector<long long> get_factors(long long n) {\n    vector<long long> factors;\n    for (long long i = 2; i * i <= n; i++) {\n        while (n % i == 0) {\n            factors.push_back(i);\n            n /= i;\n        }\n    }\n    if (n > 1) factors.push_back(n);\n    return factors;\n}"
+            }
+        ]
     }
 ]
