@@ -27,7 +27,7 @@
 
 ### Option 1: Standalone Executable (Recommended)
 If you have the compiled version, simply locate the file and run:
-1. Open the folder containing the application.
+1. Open the folder containing the application dist/.
 2. Double-click **Algorithm Finder.exe**.
 3. The application will automatically create an `algorithms.json` file in the same directory to store your data.
 
